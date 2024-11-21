@@ -1,22 +1,28 @@
 from rx.subject import Subject
 
-# 创建公共流
-public_stream = Subject()
+from libs.rich.diagnose import report
 
-# 定义订阅者
-def subscriber(value):
-    print(f"Subscriber received: {value}")
+class ReportIO:
+    # 创建公共流
+    report_stream = Subject()
+    _instance = None
 
-public_stream.subscribe(subscriber)
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
 
-# 定义生产者函数
-def producer_1():
-    public_stream.on_next("Producer 1: Hello")
+    # 定义订阅者
+    def subscriber(value):
+        # TODO: 实现
+        print(f"Subscriber received: {value}")
 
-def producer_2():
-    public_stream.on_next("Producer 2: World")
+    def __init__(self):
+        super().__init__()
 
-# 不同地方调用生产者
-producer_1()
-producer_2()
+        self.report_stream.subscribe(self.subscriber)
+
+    def reportIn(self, message):
+        self.report_stream.on_next(message)
+
 

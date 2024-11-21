@@ -1,87 +1,51 @@
-import os
-import time
-from datetime import datetime
+import uuid
+from jinja2 import Environment, FileSystemLoader
 
-class TestReport:
-    def __init__(self, title):
+class HTMLTestReport:
+    def __init__(self, title="Test Report", template_path="../", output_file="report.html"):
         self.title = title
-        self.start_time = datetime.now()
-        self.steps = []  # 保存测试步骤的记录
+        self.test_cases = []  # 存储测试用例信息
+        self.output_file = output_file
+        self.env = Environment(loader=FileSystemLoader(searchpath=template_path))
+        self.template = self.env.get_template("report_templete.html")
 
-    def log_step(self, step_description, status="PASSED", error=None):
-        """
-        记录测试步骤
-        :param step_description: 步骤描述
-        :param status: 步骤状态，默认 "PASSED" 或 "FAILED"
-        :param error: 如果失败，记录错误信息
-        """
-        step = {
-            "description": step_description,
-            "status": status,
-            "error": error,
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        }
-        self.steps.append(step)
-        print(f"{step['timestamp']} - {step['description']} - {step['status']}")
+    def add_test_case(self, name, description):
+        """添加测试用例"""
+        case_id = str(uuid.uuid4())
+        self.test_cases.append({
+            "id": case_id,
+            "name": name,
+            "description": description,
+            "status": "Pending",  # 默认状态为 Pending
+            "steps": []  # 初始化为空步骤列表
+        })
+        return case_id
 
-    def generate_html_report(self, file_path):
-        """
-        生成 HTML 格式的测试报告
-        :param file_path: 输出的文件路径
-        """
-        end_time = datetime.now()
-        duration = (end_time - self.start_time).total_seconds()
+    def add_test_step(self, case_id, description, status):
+        """向指定用例添加测试步骤"""
+        for case in self.test_cases:
+            if case["id"] == case_id:
+                case["steps"].append({
+                    "description": description,
+                    "status": status
+                })
+                # 更新用例状态
+                case["status"] = self._update_case_status(case["steps"])
+                break
+        self._generate_html()
 
-        # 创建 HTML 报告内容
-        html = f"""
-        <html>
-        <head>
-            <title>{self.title}</title>
-            <style>
-                body {{ font-family: Arial, sans-serif; margin: 20px; }}
-                h1 {{ color: #333; }}
-                table {{ border-collapse: collapse; width: 100%; margin-top: 20px; }}
-                th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
-                th {{ background-color: #f4f4f4; }}
-                .passed {{ color: green; }}
-                .failed {{ color: red; }}
-            </style>
-        </head>
-        <body>
-            <h1>Test Report: {self.title}</h1>
-            <p>Start Time: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p>End Time: {end_time.strftime('%Y-%m-%d %H:%M:%S')}</p>
-            <p>Duration: {duration:.2f} seconds</p>
-            <table>
-                <tr>
-                    <th>#</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Error</th>
-                    <th>Timestamp</th>
-                </tr>
-        """
+    def _update_case_status(self, steps):
+        """根据步骤状态更新用例状态"""
+        if any(step["status"] == "Fail" for step in steps):
+            return "Fail"
+        return "Pass"
 
-        for i, step in enumerate(self.steps, start=1):
-            status_class = "passed" if step["status"] == "PASSED" else "failed"
-            error_msg = step["error"] if step["error"] else "-"
-            html += f"""
-                <tr>
-                    <td>{i}</td>
-                    <td>{step['description']}</td>
-                    <td class="{status_class}">{step['status']}</td>
-                    <td>{error_msg}</td>
-                    <td>{step['timestamp']}</td>
-                </tr>
-            """
+    def _generate_html(self):
+        """根据模板生成 HTML 文件"""
+        html_content = self.template.render(title=self.title, test_cases=self.test_cases)
+        with open(self.output_file, "w", encoding="utf-8") as file:
+            file.write(html_content)
 
-        html += """
-            </table>
-        </body>
-        </html>
-        """
-
-        # 写入文件
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(html)
-        print(f"Test report generated: {file_path}")
+    def complete(self):
+        """完成报告"""
+        print(f"Test report generated: {self.output_file}")

@@ -1,4 +1,12 @@
+from lib.HtmlReport import TestReport
+from lib.ReportIO import ReportIO
 
+
+def startRecord():
+    report = ReportIO._instance
+    report.reportIn("test")
+    tr = TestReport(title="测试")
+    tr.log_step("测试111", "Fail", None)
 
 def generateReport(reportFile):
     """
