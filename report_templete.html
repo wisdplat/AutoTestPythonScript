@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background-color: #333; color: white; padding: 10px; text-align: center; }
+        nav { float: left; width: 20%; background: #f2f2f2; height: 100vh; padding: 20px; overflow-y: auto; }
+        nav ul { list-style-type: none; padding: 0; }
+        nav ul li { margin: 10px 0; }
+        nav ul li a { text-decoration: none; color: #333; }
+        nav ul li a:hover { text-decoration: underline; }
+        main { margin-left: 20%; padding: 20px; overflow-y: auto; }
+        .test-case { margin-bottom: 30px; }
+        .test-step { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .failure { color: red; }
+        .case-summary { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{ title }}</h1>
+    </header>
+    <nav>
+        <h3>Test Cases</h3>
+        <ul>
+            {% for case in test_cases %}
+            <li><a href="#{{ case.id }}">{{ case.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <main>
+        {% for case in test_cases %}
+        <div class="test-case" id="{{ case.id }}">
+            <h2>{{ case.name }}</h2>
+            <p>{{ case.description }}</p>
+            <div class="case-summary">
+                Status: <span class="{{ 'success' if case.status == 'Pass' else 'failure' }}">{{ case.status }}</span>
+            </div>
+            <h3>Steps</h3>
+            {% for step in case.steps %}
+            <div class="test-step">
+                <p>{{ step.description }}</p>
+                <p>Status: <span class="{{ 'success' if step.status == 'Pass' else 'failure' }}">{{ step.status }}</span></p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </main>
+</body>
+</html>
