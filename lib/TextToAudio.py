@@ -19,16 +19,17 @@ def generateAudioFile(fileContent,savePath):
         text=fileContent,speaker_wav="test.wav",
         language="zh", file_path=savePath)
 
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) != 3:
-        print("Usage: python tts.py <text> <output_path>")
-        sys.exit(1)
-
-    text = sys.argv[1]
-    print(text)
-    output_path = sys.argv[2]
-    print(output_path)
-    path = generateAudioFile(text, output_path)
-    print(path)
+# 单独运行时释放此方法
+# if __name__ == "__main__":
+#     import sys
+#
+#     if len(sys.argv) != 3:
+#         print("Usage: python tts.py <text> <output_path>")
+#         sys.exit(1)
+#
+#     text = sys.argv[1]
+#     print(text)
+#     output_path = sys.argv[2]
+#     print(output_path)
+#     path = generateAudioFile(text, output_path)
+#     print(path)

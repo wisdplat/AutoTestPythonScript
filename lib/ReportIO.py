@@ -1,6 +1,6 @@
 from rx.subject import Subject
 
-from libs.rich.diagnose import report
+
 
 class ReportIO:
     # 创建公共流

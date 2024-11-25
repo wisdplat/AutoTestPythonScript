@@ -1,8 +1,5 @@
 import cv2
 
-from libs.sympy import false
-
-
 def compareImg(src1: str, src2: str):
     """
     图像对比方法

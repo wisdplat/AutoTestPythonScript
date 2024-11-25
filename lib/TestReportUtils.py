@@ -1,12 +1,16 @@
-from lib.HtmlReport import TestReport
-from lib.ReportIO import ReportIO
+from lib.HtmlReport import HTMLTestReport
 
+report:HTMLTestReport = None
 
-def startRecord():
-    report = ReportIO._instance
-    report.reportIn("test")
-    tr = TestReport(title="测试")
-    tr.log_step("测试111", "Fail", None)
+def startRecord(title, template_path, output_file):
+    global report
+    report = HTMLTestReport(title, template_path, output_file)
+
+def addCase(name, description):
+    report.add_test_case(name, description)
+
+def addCaseStepResult(case_id, description, status):
+    report.add_test_step(case_id, description, status)
 
 def generateReport(reportFile):
     """
@@ -15,3 +19,4 @@ def generateReport(reportFile):
     :return: path 生成报告路径
     """
     print("生成报告")
+    report.complete()

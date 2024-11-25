@@ -27,11 +27,12 @@ def getAudio(path):
     return result.text
 
 
-if __name__ == "__main__":
-    import sys
-
-    if len(sys.argv) != 2:
-        print("Usage: python tts.py <text> <output_path>")
-        sys.exit(1)
-    filepath = sys.argv[1]
-    getAudio(filepath)
+# 单独运行时释放此方法
+# if __name__ == "__main__":
+#     import sys
+#
+#     if len(sys.argv) != 2:
+#         print("Usage: python tts.py <text> <output_path>")
+#         sys.exit(1)
+#     filepath = sys.argv[1]
+#     getAudio(filepath)
