@@ -29,10 +29,10 @@ def load_local_module(module_path, method_name=None):
 
     return module
 
-def run(file_path,method_name):
+def run(file_path):
     # 加载python文件
     module_path = os.path.join(os.getcwd(), file_path)
     # module = load_local_module(module_path)
-    greet_function = load_local_module(module_path, method_name)
+    greet_function = load_local_module(module_path, "runCase")
     # 执行python文件中的方法
     greet_function()

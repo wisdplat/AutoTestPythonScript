@@ -13,10 +13,10 @@ def generateAudioFile(fileContent,savePath):
     # Run TTS
     # ❗ Since this model is multi-lingual voice cloning model, we must set the target speaker_wav and language
     # Text to speech list of amplitude values as output
-    # wav = tts.tts(text="明月几时有？把酒问青天。不知天上宫阙，今夕是何年。我欲乘风归去，又恐琼楼玉宇，高处不胜寒。起舞弄清影，何似在人间。", speaker_wav="test.wav", language="zh")
+    # wav = tts.tts(text="明月几时有？把酒问青天。不知天上宫阙，今夕是何年。我欲乘风归去，又恐琼楼玉宇，高处不胜寒。起舞弄清影，何似在人间。", speaker_wav="speaker_wav.wav", language="zh")
     # Text to speech to a file
     return tts.tts_to_file(
-        text=fileContent,speaker_wav="test.wav",
+        text=fileContent,speaker_wav="./lib/res/speaker_wav.wav",
         language="zh", file_path=savePath)
 
 # 单独运行时释放此方法

@@ -1,6 +1,5 @@
 import sounddevice as sd
 from scipy.io.wavfile import write
-import sounddevice as sd
 # 导入soundfile库用于读取音频文件
 import soundfile as sf
 

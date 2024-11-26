@@ -4,7 +4,7 @@ import whisper
 def getAudio(path):
     # 加载模型
     device = "cpu"
-    model = whisper.load_model("turbo").to(device)
+    model = whisper.load_model("large").to(device)
 
     # 加载音频并预处理
     audio = whisper.load_audio(path)

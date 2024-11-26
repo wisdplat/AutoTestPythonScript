@@ -1,5 +1,6 @@
 import cv2
 
+
 def compareImg(src1: str, src2: str):
     """
     图像对比方法
