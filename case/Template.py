@@ -7,10 +7,4 @@ from lib.TextToAudio import generateAudioFile
 
 
 def runCase():
-    getAudio
-    startRecording
-    playAudio
-    compareImg
-    addCaseStepResult
-    getTextInImage
-    generateAudioFile
+    getAudio()
